@@ -130,7 +130,7 @@ end
 }
 
 # Create an inverted array to allow hex to be converted back to a command
-@hex_to_commands = @command_to_hex.invert
+@hex_to_command = @command_to_hex.invert
 
 # Create an array of the commands that require an ACK to be requested
 @ack_commands = [
@@ -170,8 +170,8 @@ end
 #puts "User code: " + @user_code.to_s
 #puts "Device: " + @device_int.to_s
 #puts "Command: " + @hex_command.to_s
-puts "Data1: " + @data1.to_s
-puts "Data2: " + @data2.to_s
+#puts "Data1: " + @data1.to_s
+#puts "Data2: " + @data2.to_s
 @packet = [0x02, 0x05, @user_code, @device_int, @hex_command, @data1, @data2, 0x03].pack('C*')
 
 # Write the packet to the serial port and wait for a response
@@ -195,7 +195,8 @@ def parse_response(packet)
     (packet_array[11] == @user_code) &&
     (packet_array[12] == @device_int) &&
     (packet_array[13] == @hex_command)
-    return "Device " + @device + " received and reported status " + @hex_to_command[packet_array[13]]
+    return "Device " + @device + " received command and reported status " + @hex_to_command[packet_array[13] - 32] + ", with Data1 " + 
+      packet_array[14].to_s + " and Data2 " + packet_array[15].to_s
   else
     return "An packet was received, but it was not a valid response"
   end
