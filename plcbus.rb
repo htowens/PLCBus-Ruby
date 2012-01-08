@@ -97,7 +97,7 @@ end
 
 # Set up the conversion from command to hex
 # NOTE: Ensure that no 2 items in this array have duplicate hex values (invert is used later, so data will be lost if there are duplicates)
-@commands_to_hex = {
+@command_to_hex = {
   "ALL_UNITS_OFF"	          => 0x00,
 	"ALL_LIGHTS_ON"	          => 0x01,
 	"ON"			                => 0x02,
@@ -130,7 +130,7 @@ end
 }
 
 # Create an inverted array to allow hex to be converted back to a command
-@hex_to_commands = @commands_to_hex.invert
+@hex_to_commands = @command_to_hex.invert
 
 # Create an array of the commands that require an ACK to be requested
 @ack_commands = [
@@ -154,7 +154,7 @@ end
 @device_int = @housecode + @devicecode
 
 # Convert the command passed as a command line option to hex  
-@hex_command = @commands_to_hex[@command]
+@hex_command = @command_to_hex[@command]
 
 # If the command requires an ACK, adjust the hex value accordingly
 @hex_command = @hex_command + 0x20 if @ack_commands.include?(@command)
@@ -195,7 +195,7 @@ def parse_response(packet)
     (packet_array[11] == @user_code) &&
     (packet_array[12] == @device_int) &&
     (packet_array[13] == @hex_command)
-    return "Device " + @device + " received and completed command " + @command
+    return "Device " + @device + " received and reported status " + @hex_to_command[packet_array[13]]
   else
     return "An packet was received, but it was not a valid response"
   end
