@@ -26,7 +26,7 @@ options[:data2] = 0x00
 # Parse the command line options 
 optparse = OptionParser.new do |opts|
   # Set a banner, displayed at the top of the help screen.
-  opts.banner = "Usage: plcbus.rb -d <device> -c <command> -d1 [data1] -d2 [data2]"
+  opts.banner = "Usage: ruby plcbus.rb -d <device> -c <command> -d1 [data1] -d2 [data2]"
   # Set the device to control
   opts.on( '-d', '--device DEVICE', 'The device to send the command to' ) do |device|
     options[:device] = device

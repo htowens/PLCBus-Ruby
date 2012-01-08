@@ -4,7 +4,7 @@ The commands can be sent directly from the command line, with no need to run the
 
 Before using the script, it will be necessary to edit lines 14 and 15 in order to set the script up for your controller and user code.
 
-    Usage: plcbus.rb -d <device> -c <command> -d1 [data1] -d2 [data2]
+    Usage: ruby plcbus.rb -d <device> -c <command> -d1 [data1] -d2 [data2]
         -d, --device DEVICE              The device to send the command to
         -c, --command COMMAND            The command to send to the device
             --data1 DATA1                The optional data1 parameter
