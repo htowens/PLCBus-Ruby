@@ -18,8 +18,8 @@ end
 options = {}
 
 # Set the default options
-options[:device] = "A1"
-options[:command] = "ON"
+options[:device] = nil
+options[:command] = nil
 options[:data1] = 0x00
 options[:data2] = 0x00
 
@@ -36,11 +36,11 @@ optparse = OptionParser.new do |opts|
     options[:command] = command
   end
   # Set the optional data1 parameter
-  opts.on( '-d1', '--data1 DATA1', 'The optional data1 parameter' ) do |data1|
+  opts.on( '--data1 DATA1', 'The optional data1 parameter' ) do |data1|
     options[:data1] = data1
   end
   # Set the optional data1 parameter
-  opts.on( '-d2', '--data2 DATA2', 'The optional data2 parameter' ) do |data2|
+  opts.on( '--data2 DATA2', 'The optional data2 parameter' ) do |data2|
     options[:data2] = data2
   end
   # Show the helpfile
@@ -56,6 +56,8 @@ optparse.parse!
 # DEBUG: print the options
 #pp "Options:", options
 #pp "ARGV:", ARGV
+
+raise "Error: Device and Command are required options" if (options[:device] == nil || options[:command] == nil)
 
 # Set variables using the array values
 @device = options[:device]
