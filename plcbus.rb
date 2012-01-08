@@ -62,8 +62,8 @@ raise "Error: Device and Command are required options" if (options[:device] == n
 # Set variables using the array values
 @device = options[:device]
 @command = options[:command]
-@data1 = options[:data1]
-@data2 = options[:data2]
+@data1 = options[:data1].to_i
+@data2 = options[:data2].to_i
 
 # Create arrays of commands that require Data1 and Data2 to be specified
 @data1_commands = [
@@ -170,8 +170,8 @@ end
 #puts "User code: " + @user_code.to_s
 #puts "Device: " + @device_int.to_s
 #puts "Command: " + @hex_command.to_s
-#puts @data1
-#puts @data2
+puts "Data1: " + @data1.to_s
+puts "Data2: " + @data2.to_s
 @packet = [0x02, 0x05, @user_code, @device_int, @hex_command, @data1, @data2, 0x03].pack('C*')
 
 # Write the packet to the serial port and wait for a response
