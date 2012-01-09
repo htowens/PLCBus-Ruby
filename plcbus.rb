@@ -177,9 +177,11 @@ end
 
 # Write the packet to the serial port and wait for a response
 def send_command
+  # Send the packet 3 times (loop will break early if command is successful and response is received)
   3.times {
     @port_write.write @packet
     @returned_packet = @port_read.read
+    #DEBUG: print the received packet
     #puts @returned_packet.unpack('C*')
     @parsed_response = parse_response(@returned_packet)
     if @returned_packet != nil && @parsed_response
@@ -190,6 +192,8 @@ def send_command
     else
       puts "No response received"
     end
+    # Wait 125ms before sending the packet again
+    sleep(1.0/8.0)
   }
 end
 
