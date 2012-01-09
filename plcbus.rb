@@ -167,6 +167,7 @@ end
 @port_write.modem_params = ({"parity"=>0, "baud"=>9600, "stop_bits"=>1, "data_bits"=>8})
 
 # Prepare a packet based on the command requested
+# DEBUG: print the values of the variables
 #puts "User code: " + @user_code.to_s
 #puts "Device: " + @device_int.to_s
 #puts "Command: " + @hex_command.to_s
@@ -176,14 +177,20 @@ end
 
 # Write the packet to the serial port and wait for a response
 def send_command
-  @port_write.write @packet
-  @returned_packet = @port_read.read
-  #puts @returned_packet.unpack('C*')
-  if @returned_packet != nil
-    puts parse_response(@returned_packet)
-  else
-    puts "No response received"
-  end
+  3.times {
+    @port_write.write @packet
+    @returned_packet = @port_read.read
+    #puts @returned_packet.unpack('C*')
+    @parsed_response = parse_response(@returned_packet)
+    if @returned_packet != nil && @parsed_response
+      puts @parsed_response
+      break
+    elsif @returned_packet != nil && @parsed_response == false
+      "A packet was received, but it was not a valid response"
+    else
+      puts "No response received"
+    end
+  }
 end
 
 def parse_response(packet)
@@ -198,7 +205,7 @@ def parse_response(packet)
     return "Device " + @device + " received command and reported status " + @hex_to_command[packet_array[13] - 32] + ", with Data1 " + 
       packet_array[14].to_s + " and Data2 " + packet_array[15].to_s
   else
-    return "An packet was received, but it was not a valid response"
+    return false
   end
 end
 
