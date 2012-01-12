@@ -181,7 +181,7 @@ def send_command
     @port_write.write @packet
     @returned_packet = @port_read.read(18)
     #DEBUG: print the received packet
-    #puts @returned_packet.unpack('C*')
+    puts @returned_packet.unpack('C*')
     @parsed_response = parse_response(@returned_packet)
     if @returned_packet != nil && @parsed_response
       puts @parsed_response
