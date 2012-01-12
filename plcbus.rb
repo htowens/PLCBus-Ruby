@@ -162,7 +162,6 @@ end
 # Set up the serial ports (a separate one for reading and writing to avoid any packet loss)
 @port_read = SerialPort.new(@serial_device, 9600)
 @port_read.modem_params = ({"parity"=>0, "baud"=>9600, "stop_bits"=>1, "data_bits"=>8})
-@port_read.read_timeout = (900)
 @port_write = SerialPort.new(@serial_device, 9600)
 @port_write.modem_params = ({"parity"=>0, "baud"=>9600, "stop_bits"=>1, "data_bits"=>8})
 
@@ -180,7 +179,7 @@ def send_command
   # Send the packet 3 times (loop will break early if command is successful and response is received)
   3.times {
     @port_write.write @packet
-    @returned_packet = @port_read.read
+    @returned_packet = @port_read.read(18)
     #DEBUG: print the received packet
     #puts @returned_packet.unpack('C*')
     @parsed_response = parse_response(@returned_packet)
