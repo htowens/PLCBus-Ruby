@@ -148,9 +148,15 @@ end
   "GET_NOISE_STRENGTH"
   ]
   
-# Convert the device address to hex
-@housecode = @device[0].chr.tr('A-P', '0-15').to_i
-@devicecode = @device.reverse.chop.reverse.to_i - 1
+# Create the variables according to what the user wants to do
+# The house code is the letter at the start of the device address (A-P), which we need to convert 
+# to an integer and multiply it by 16 (each house code has 16 addresses, so first device in code A 
+# is integer 0 and first in code B is integer 16)
+@housecode = (@device.address[0].chr.tr('A-P', '0-15').to_i)*16
+# The device code is the second part of the address - thus we need to remove the first character to
+# get this, then subtract 1 (integer for A1 is 0)
+@devicecode = @device.address.reverse.chop.reverse.to_i - 1
+# Sum the house code and the device code to get the integer address of the device
 @device_int = @housecode + @devicecode
 
 # Convert the command passed as a command line option to hex  
